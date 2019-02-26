@@ -1,5 +1,6 @@
 import React from "react";
 import { AsyncStorage, Button, StyleSheet, View } from "react-native";
+import signIn from "../api/signIn.api";
 
 import { Input, Password } from "../components";
 export default class SignInScreen extends React.Component {
@@ -18,9 +19,12 @@ export default class SignInScreen extends React.Component {
   };
 
   _signInAsync = async () => {
-    //const token = await S
-    await AsyncStorage.setItem("userToken", "abc");
-    this.props.navigation.navigate("Main");
+    const token = await signIn(this.state.userName, this.state.password);
+    console.log("token is", token);
+    if (token) {
+      await AsyncStorage.setItem("userToken", token);
+      this.props.navigation.navigate("Main");
+    }
   };
 
   render() {
